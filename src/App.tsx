@@ -1,13 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Nav } from './component/nav/nav';
+import { Routes, Route } from "react-router"
 
-function App() {
+function Home() {
   return (
-    <div className="App">
-      <div>buyoung metal</div>
+    <div>
+       Home
     </div>
   );
 }
 
-export default App;
+export default Home;
