@@ -7,11 +7,6 @@ export const Nav: React.FC = () => {
     const handleMenuClick = () => {
         setIsOpened(!isOpened)
     }
-
-    // const navigate = useNavigate()
-    // const goTo = (path: string) => {
-    //     navigate(path)
-    // }
     
     return (
         <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
