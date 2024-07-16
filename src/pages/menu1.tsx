@@ -1,14 +1,10 @@
 import { useState } from "react";
 import { Table } from "../component/table/table"
+import { CheckListRows } from "../types/table";
+import { extractExcel, SheetInfo } from "../helper/extract-excel";
 
-export interface Row {
-    index: string[];
-    data: boolean[];
-}
 
-export type Rows = Row[];
-
-const rows: Rows = [
+const rows: CheckListRows = [
     {
         index: ["10", "비젤두입", "비젤 상태", "직접풍, 비젤풍 파손 확인겟", "육안", "매작업시"],
         data: [false, false, false, false, false, false, false, false, false, false, false , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,],        
@@ -81,10 +77,54 @@ const rows: Rows = [
 ]
 
 export const Menu1 = () => {
-    const [ values, setValues ] = useState<Rows>(rows)
+    const [ values, setValues ] = useState<CheckListRows>(rows)
 
     const handleSaveBtnClick = () => {
         console.log(values);
+    }
+
+    const sheetInfo: SheetInfo =  {
+        fileName: 'text',
+        sheetName: 'test shee',
+        columnNames: [
+            {header: "No", key: 'no', width: 10},
+            {header: "공정명", key: '공정명', width: 10},
+            {header: "점검항목", key: '점검항목', width: 10},
+            {header: "규격", key: '규격', width: 10},
+            {header: "방법", key: '방법', width: 10},
+            {header: "주기", key: '주기', width: 10},
+            {header: "1", key: '1', width: 10},
+            {header: "2", key: '2', width: 10},
+            {header: "3", key: '3', width: 10},
+            {header: "4", key: '4', width: 10},
+            {header: "5", key: '5', width: 10},
+            {header: "6", key: '6', width: 10},
+            {header: "7", key: '7', width: 10},
+            {header: "8", key: '8', width: 10},
+            {header: "9", key: '9', width: 10},
+            {header: "10", key: '10', width: 10},
+            {header: "11", key: '11', width: 10},
+            {header: "12", key: '12', width: 10},
+            {header: "13", key: '13', width: 10},
+            {header: "14", key: '14', width: 10},
+            {header: "15", key: '15', width: 10},
+            {header: "16", key: '16', width: 10},
+            {header: "17", key: '17', width: 10},
+            {header: "18", key: '18', width: 10},
+            {header: "19", key: '19', width: 10},
+            {header: "20", key: '20', width: 10},
+            {header: "21", key: '21', width: 10},
+            {header: "22", key: '22', width: 10},
+            {header: "23", key: '23', width: 10},
+            {header: "24", key: '24', width: 10},
+            {header: "25", key: '25', width: 10},
+            {header: "26", key: '26', width: 10},
+            {header: "27", key: '27', width: 10},
+            {header: "28", key: '28', width: 10},
+            {header: "29", key: '29', width: 10},
+            {header: "30", key: '30', width: 10},
+            {header: "31", key: '31', width: 10},
+        ] 
     }
 
     return (
@@ -92,8 +132,8 @@ export const Menu1 = () => {
             <div className="flex items-center">
                 <div className="flex-1"> Title </div>
                 <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100" onClick={handleSaveBtnClick}>저장하기</button>                
+                <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100" onClick={() => extractExcel(sheetInfo, rows)}>추출하기</button>                
             </div>
-
             <Table rows={rows} setValues={setValues}/>
         </div>
     )
