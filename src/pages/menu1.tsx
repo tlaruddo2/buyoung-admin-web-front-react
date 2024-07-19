@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Table } from "../component/table/table"
 import { CheckListRows } from "../types/table";
 import { extractExcel, SheetInfo } from "../helper/extract-excel";
+import axios from "axios";
 
-
-const rows: CheckListRows = [
+let rows: CheckListRows = [
     {
         index: ["10", "비젤두입", "비젤 상태", "직접풍, 비젤풍 파손 확인겟", "육안", "매작업시"],
         data: [false, false, false, false, false, false, false, false, false, false, false , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,],        
@@ -75,12 +75,70 @@ const rows: CheckListRows = [
         data: [false, false, false, false, false, false, false, false, false, false, false , false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,],        
     },
 ]
+//race condition 
+//abort controller 
 
 export const Menu1 = () => {
-    const [ values, setValues ] = useState<CheckListRows>(rows)
+    const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [values, setValues] = useState<CheckListRows>(rows)
+    const [month, setMonth] = useState<string>("7");
+    const [year, setYear] = useState<string>("2024");
 
-    const handleSaveBtnClick = () => {
-        console.log(values);
+    useEffect( () => {
+        const fetchData = async () => {
+            setIsLoading(true);
+
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/checklist/monthly-condition/${year}/${month}`)
+                const data = response.data;
+                const checkedArr = data[0].checked; 
+                const newCheckedArr = rows.map((row, i) => ({
+                    index: values[i].index,
+                    data: checkedArr[i] || values[i].data,
+                })) 
+
+                setValues(newCheckedArr);
+            }catch(e: any){
+                setError(error);
+            }finally {
+                setIsLoading(false);
+            }
+        }
+
+        fetchData();
+    }, []);
+
+    interface Data {
+        year: string;
+        month: string;
+        checked: boolean[][];
+    }
+    const sendData = async (data: Data) => {
+        try{
+            const response = await axios.put("https://buyoung-admin-web-back-node.onrender.com/checklist/monthly-condition", data)    
+            alert("saved");
+        }catch(e: any){
+            setError(e)
+        }finally{
+            window.location.reload();
+        }
+    }
+
+
+    const handleSaveBtnClick = (year: string, month: string) => {
+        const checked = [] 
+
+        for ( var i = 0; i < values.length; i ++){
+            checked.push(values[i].data)
+        }
+        const data = {
+            year: year,
+            month: month,
+            checked: checked,
+        }
+
+        sendData(data);
     }
 
     const sheetInfo: SheetInfo =  {
@@ -127,14 +185,19 @@ export const Menu1 = () => {
         ] 
     }
 
+
+    if (error) return <div>error, try again</div>
+
     return (
         <div >
-            <div className="flex items-center">
-                <div className="flex-1"> Title </div>
-                <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100" onClick={handleSaveBtnClick}>저장하기</button>                
+            <div className="flex items-center p-2">
+                <div className="flex-1"> 24년 7월 조건관리 체크리스트 </div>
+                <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100 mr-2" onClick={() => handleSaveBtnClick(year, month)}>저장하기</button>                
                 <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100" onClick={() => extractExcel(sheetInfo, rows)}>추출하기</button>                
             </div>
-            <Table rows={rows} setValues={setValues}/>
+            {isLoading ?
+                <div>loading... </div>
+                :<Table rows={values} setValues={setValues}/>}
         </div>
     )
 }
