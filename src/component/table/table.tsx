@@ -38,7 +38,7 @@ export const Table: React.FC<Props> = ( { rows, setValues } ) => {
                             <tr key={rowIndex}>
                                 {
                                     row.index.map((indexData, i) => (
-                                        <td className="border px-4 py-2">{indexData}</td>
+                                        <td key={i} className="border px-4 py-2">{indexData}</td>
                                     ))
                                 }
                                 {
