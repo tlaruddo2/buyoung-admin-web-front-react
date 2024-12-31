@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Table } from "../component/table/table"
-import { CheckListRows } from "../types/table";
-import { extractExcel, SheetInfo } from "../helper/extract-excel";
+import { Table } from "../../component/table/table"
+import { CheckListRows } from "../../types/table";
+import { extractExcel, SheetInfo } from "../../helper/extract-excel";
 import axios from "axios";
+import { Header } from "./children/header";
 
 let rows: CheckListRows = [
     {
@@ -78,7 +79,7 @@ let rows: CheckListRows = [
 //race condition 
 //abort controller 
 
-export const Menu1 = () => {
+export const ConditionManagement = () => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [values, setValues] = useState<CheckListRows>(rows)
@@ -195,6 +196,7 @@ export const Menu1 = () => {
                 <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100 mr-2" onClick={() => handleSaveBtnClick(year, month)}>저장하기</button>                
                 <button className=" text-white rounded py-1 px-2 my-1 bg-sky-500/100" onClick={() => extractExcel(sheetInfo, rows)}>추출하기</button>                
             </div>
+            <Header year={"2024"} month="6"/>
             {isLoading ?
                 <div>loading... </div>
                 :<Table rows={values} setValues={setValues}/>}
