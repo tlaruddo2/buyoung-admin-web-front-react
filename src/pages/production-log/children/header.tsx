@@ -2,50 +2,79 @@ import { SetStateAction, useState } from "react";
 
 export const Header: React.FC = () => {
     const today = new Date().toISOString().split('T')[0];
-    const [selectedDate, setSelectedDate] = useState(today);
-    const [selectedOption, setSelectedOption] = useState("all");
+    const [ selectedDate, setSelectedDate ] = useState(today);
+    const [ selectedInvoiceOpt, setSelectedInvoiceOpt ] = useState("all");
+    const [ selectedProductionLineOpt, setSelectedProductionLineOpt ] = useState("all");
 
     const handleDateChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSelectedDate(event.target.value);
     };
 
-    const handleTabClick = (option: string) => {
-        console.log(option)
-        setSelectedOption(option);
+    const handleInvoiceOptTabClick = (opt: string) => {
+        setSelectedInvoiceOpt(opt);
     };
 
+    const handleProductionLineOptTabClick = (opt: string) => {
+        setSelectedProductionLineOpt(opt);
+    }
+
     return (
-        <div className="w-full flex justify-between items-center h-15">
-            <div role="tablist" className="tabs tabs-boxed tabs-sm h-8">
+        <div className="w-full flex justify-between items-center h-15 p-2">
+            <div className="join flex items-center gap-2">
+                <input
+                    type="date"
+                    id="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    className="input input-bordered input-primary max-w-xs h-8 min-h-0"
+                />   
+                <div role="tablist" className="tabs tabs-boxed tabs-sm h-8 flex items-center">
+                    <div 
+                        role="tab" 
+                        className={`tab h-full flex items-center ${selectedProductionLineOpt === 'all' ? 'tab-active font-bold' : ''}`}
+                        onClick={() => handleProductionLineOptTabClick('all')}
+                    >
+                        전체
+                    </div>
+                    <div 
+                        role="tab" 
+                        className={`tab h-full flex items-center ${selectedProductionLineOpt === 'barell' ? 'tab-active font-bold' : ''}`}
+                        onClick={() => handleProductionLineOptTabClick('barell')}
+                    >
+                        바렐
+                    </div>
+                    <div 
+                        role="tab" 
+                        className={`tab h-full flex items-center ${selectedProductionLineOpt === 'rack' ? 'tab-active font-bold' : ''}`}
+                        onClick={() => handleProductionLineOptTabClick('rack')}
+                    >
+                        렉
+                    </div>
+                </div>           
+            </div>
+            <div role="tablist" className="tabs tabs-boxed tabs-sm h-8 flex items-center">
                 <div 
                     role="tab" 
-                    className={`tab h-full ${selectedOption === 'all' ? 'tab-active font-bold' : ''}`}
-                    onClick={() => handleTabClick('all')}
+                    className={`tab h-full flex items-center ${selectedInvoiceOpt === 'all' ? 'tab-active font-bold' : ''}`}
+                    onClick={() => handleInvoiceOptTabClick('all')}
                 >
                     전체
                 </div>
                 <div 
                     role="tab" 
-                    className={`tab h-full ${selectedOption === 'unpublished' ? 'tab-active font-bold' : ''}`}
-                    onClick={() => handleTabClick('unpublished')}
+                    className={`tab h-full flex items-center ${selectedInvoiceOpt === 'unpublished' ? 'tab-active font-bold' : ''}`}
+                    onClick={() => handleInvoiceOptTabClick('unpublished')}
                 >
                     미발행
                 </div>
                 <div 
                     role="tab" 
-                    className={`tab h-full ${selectedOption === 'published' ? 'tab-active font-bold' : ''}`}
-                    onClick={() => handleTabClick('published')}
+                    className={`tab h-full flex items-center ${selectedInvoiceOpt === 'published' ? 'tab-active font-bold' : ''}`}
+                    onClick={() => handleInvoiceOptTabClick('published')}
                 >
                     발행
                 </div>
             </div>           
-            <input
-                type="date"
-                id="date"
-                value={selectedDate}
-                onChange={handleDateChange}
-                className="input input-bordered input-primary w-full max-w-xs m-2 h-8 min-h-0"
-            /> 
         </div>
     )
 }
