@@ -16,3 +16,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  color-scheme: light;
+}
+
+/* Force light mode even if dark mode classes are applied */
+.dark {
+  color-scheme: light !important;
+}
