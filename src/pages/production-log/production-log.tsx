@@ -1,4 +1,5 @@
 import { Footer, Header, Table} from  "./children";
+import { AddDataModal } from "./children/add-data-modal";
 
 export const ProductionLog: React.FC = () => {
     return (
@@ -6,6 +7,7 @@ export const ProductionLog: React.FC = () => {
             <Header/> 
             <Table/>
             <Footer/>
+            <AddDataModal/>
         </div>
     )
 }
