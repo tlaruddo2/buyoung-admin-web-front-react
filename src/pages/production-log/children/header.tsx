@@ -8,14 +8,17 @@ export const Header: React.FC = () => {
 
     const handleDateChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSelectedDate(event.target.value);
+        console.log("[Debug: production-log/children/header.tsx] selectedDate: ", selectedDate);
     };
 
     const handleInvoiceOptTabClick = (opt: string) => {
         setSelectedInvoiceOpt(opt);
+        console.log("[Debug: production-log/children/header.tsx] selectedInvoiceOpt: ", selectedInvoiceOpt);
     };
 
     const handleProductionLineOptTabClick = (opt: string) => {
         setSelectedProductionLineOpt(opt);
+        console.log("[Debug: production-log/children/header.tsx] selectedProductionLineOpt: ", selectedProductionLineOpt);
     }
 
     return (
