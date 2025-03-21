@@ -3,10 +3,15 @@ import { useState } from "react"
 export const Nav: React.FC = () => {
     const [isOpened, setIsOpened] = useState<boolean>(false)
     
+    const handleLogout = () => {
+        localStorage.removeItem('isAuthenticated');
+        window.location.href = '/sign-in';
+    }
+    
     return (
         <nav className="bg-base-100 w-full px-1 py-2">
             <div className="flex justify-between items-center w-full px-1">
-                <a href="/" className="text-black text-xl font-semibold">
+                <a href="/dashboard" className="text-black text-xl font-semibold">
                     부영금속
                 </a>
 
@@ -25,9 +30,15 @@ export const Nav: React.FC = () => {
                     lg:block absolute lg:relative top-12 lg:top-0 left-0 lg:left-auto w-full lg:w-auto bg-white lg:bg-transparent p-4 lg:p-0 z-50`}
                 >
                     <div className="flex flex-col lg:flex-row gap-4">
-                        <a href="condition-management" className="text-black hover:text-gray-700">조건관리</a>
-                        <a href="production-log" className="text-black hover:text-gray-700">생산관리</a>
-                        <a href="menu3" className="text-black hover:text-gray-700">인사관리</a>
+                        <a href="/dashboard/condition-management" className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">조건관리</a>
+                        <a href="/dashboard/production-log" className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">생산관리</a>
+                        <a href="/dashboard/employee-management" className="bg-gray-100 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors duration-200">인사관리</a>
+                        <button 
+                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-200"
+                            onClick={handleLogout}
+                        >
+                            로그아웃
+                        </button>
                     </div>
                 </div>
             </div>
