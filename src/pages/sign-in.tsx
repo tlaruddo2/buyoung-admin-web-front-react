@@ -1,17 +1,22 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks';
 
 export const SignIn = () => {
+  const { login } = useAuth();
+
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Sign in attempt with:', { id, password });
-    if (id === 'admin' && password === 'admin') {
+
+    const result = await login({ userName: id, password });
+    console.log('Sign in result:', result);
+    if (result.success) {
       console.log('Sign in properly:', { id, password });
-      localStorage.setItem('isAuthenticated', 'true');
       navigate('/dashboard');
     } else {
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
