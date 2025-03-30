@@ -1,14 +1,12 @@
-import axios from 'axios'
+import axios from 'axios';
 
-// Create axios instance with default config
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+  baseURL: 'http://localhost:8000', //TODO: BYM-30
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-// Add request interceptor
 api.interceptors.request.use(
   (config) => {
     // You can add auth token here if needed
@@ -19,7 +17,6 @@ api.interceptors.request.use(
   }
 )
 
-// Add response interceptor
 api.interceptors.response.use(
   (response) => response,
   (error) => {

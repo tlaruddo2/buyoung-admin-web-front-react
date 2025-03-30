@@ -2,12 +2,13 @@ import './main.css';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
 import { Nav } from './component/nav/nav';
-import { ConditionManagement } from './pages/condition-management/condition-management';
+// import { ConditionManagement } from './pages/condition-management/condition-management';
 import { Home } from './pages/home';
 import { ProductionLog } from './pages/production-log/production-log';
 import { SignIn } from './pages/sign-in';
-import { useAuth } from './hooks';
+import { useAuthStore } from './hooks/auth/useAuthStore';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -20,7 +21,7 @@ const queryClient = new QueryClient({
 });
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuthStore();
 
   if (!isLoggedIn) {
     console.log("Not authenticated, redirecting to sign-in");
@@ -37,6 +38,7 @@ const root = ReactDOM.createRoot(
 root.render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <Toaster position="top-center" />
         <Routes>
           <Route path="/sign-in" element={<SignIn/>}/>
           <Route path="/" element={<Navigate to="/sign-in" replace />}/>
@@ -46,7 +48,7 @@ root.render(
                 <Nav/>
                 <Routes>
                   <Route index element={<Home/>}/>
-                  <Route path="/condition-management" element={<ConditionManagement/>}/>
+                  {/* <Route path="/condition-management" element={<ConditionManagement/>}/> */}
                   <Route path="/production-log" element={<ProductionLog/>}/>
                 </Routes>
               </>

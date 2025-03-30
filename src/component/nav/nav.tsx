@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { useAuth } from "../../hooks"
+import { useAuthStore } from "@/hooks/auth/useAuthStore"
 export const Nav: React.FC = () => {
-    const { logout } = useAuth();
+    const { logout } = useAuthStore();
     const [isOpened, setIsOpened] = useState<boolean>(false)
     
     const handleLogout = () => {

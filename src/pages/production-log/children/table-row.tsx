@@ -1,4 +1,5 @@
-import { ProductionRecord } from "../../../hooks";
+import { ProductionRecord } from "@/types/production";
+import { useProductionRecordStore } from '@/hooks/production-records/useProductionRecordStore';
 
 interface Props {
   record: ProductionRecord;
@@ -6,13 +7,43 @@ interface Props {
 }
 
 export const TableRow: React.FC<Props> = ({ record, onImageClick }) => {
+  const { 
+    selectedRecord, 
+    selectedIds,
+    toggleSelection,
+    setSelectedRecord
+  } = useProductionRecordStore();
+
+  const isSelected = selectedIds.includes(record.id);
+  const isEditing = selectedRecord?.id === record.id;
+
+  const handleRowClick = (e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('input[type="checkbox"]')) {
+      return;
+    }
+    setSelectedRecord(record);
+    const modal = document.getElementById('add-data-modal') as HTMLDialogElement;
+    modal?.showModal();
+  };
+
   return (
-    <tr key={record.id} className="hover:bg-gray-100">
+    <tr 
+      key={record.id} 
+      className={`hover:bg-gray-100 cursor-pointer ${isEditing ? 'bg-blue-50' : ''}`}
+      onClick={handleRowClick}
+    >
       <td className="border border-gray-300">
-        <input type="checkbox" />
+        <input 
+          type="checkbox" 
+          checked={isSelected}
+          onChange={(e) => {
+            e.stopPropagation(); 
+            toggleSelection(record.id);
+          }}
+        />
       </td>
       <td className="border border-gray-300">
-        <button>{record.id}</button>
+        <button onClick={() => setSelectedRecord(record)}>{record.id}</button>
       </td>
       <td className="border border-gray-300 px-4 py-2">
         {record.production_line}
@@ -27,7 +58,10 @@ export const TableRow: React.FC<Props> = ({ record, onImageClick }) => {
             src={record.image_url} 
             alt="product" 
             className="w-6 h-6 mx-auto cursor-pointer" 
-            onClick={() => onImageClick(record.image_url)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onImageClick(record.image_url!);
+            }}
           />
         ) : (
           <div className="w-6 h-6 mx-auto flex items-center justify-center text-gray-600">

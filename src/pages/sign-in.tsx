@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks';
+import { useAuthStore } from '@/hooks/auth/useAuthStore';
 
 export const SignIn = () => {
-  const { login } = useAuth();
+  const { login } = useAuthStore();
 
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');

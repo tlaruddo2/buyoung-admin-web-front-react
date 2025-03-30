@@ -1,46 +1,9 @@
+import { AuthStoreState } from '@/types/auth'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
+import { LoginCredentials, User } from '@/types/auth'
 
-interface User {
-  id: string
-  name: string
-  userName: string
-  password: string //TODO: convert to token or store password in a secure way
-}
-
-interface LoginCredentials {
-  userName: string
-  password: string
-}
-
-interface AuthResponse {
-  success: boolean
-  message: string
-  user?: Omit<User, 'password'> // Exclude password from response
-}
-
-interface AppState {
-  currentUser: Omit<User, 'password'> | null
-  isLoggedIn: boolean
-  error: string | null
-  isAdmin: boolean
-  
-  // Modified login to handle success/failure
-  login: (credentials: LoginCredentials) => Promise<AuthResponse>
-  logout: () => void
-}
-
-// Mock user database (in real app, this would be in your backend)
-const MOCK_USERS: User[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    userName: 'admin',
-    password: 'admin' //TODO: In real app, this would be hashed
-  }
-]
-
-export const useStore = create<AppState>()(
+export const authStore = create<AuthStoreState>()(
   persist(
     (set) => ({
       currentUser: null,
@@ -90,12 +53,17 @@ export const useStore = create<AppState>()(
       })
     }),
     {
-      name: 'auth-storage',
-      partialize: (state) => ({
-        currentUser: state.currentUser,
-        isLoggedIn: state.isLoggedIn
-      })
+      name: 'app-storage'
     }
   )
 ) 
 
+// Mock user database (in real app, this would be in your backend)
+const MOCK_USERS: User[] = [
+  {
+    id: '1',
+    name: 'John Doe',
+    userName: 'admin',
+    password: 'admin' //TODO: In real app, this would be hashed
+  }
+]
