@@ -5,7 +5,7 @@ import { useProductionRecordStore } from '@/hooks/production-records';
 import toast from 'react-hot-toast';
 
 export const AddDataModal: React.FC = () => {
-  const { selectedRecord } = useProductionRecordStore();
+  const { selectedRecord, setSelectedRecord } = useProductionRecordStore();
 
   const [formData, setFormData] = useState<Partial<ProductionRecord>>({
     production_line: selectedRecord?.production_line || '',
@@ -62,6 +62,7 @@ export const AddDataModal: React.FC = () => {
         {
           const modal = document.getElementById('add-data-modal') as HTMLDialogElement;
           modal?.close();
+          setSelectedRecord(undefined);
         },
         onError: (error) => {
           console.error(error);
@@ -73,8 +74,13 @@ export const AddDataModal: React.FC = () => {
 
   createRecord(formData as Omit<ProductionRecord, 'id' | 'created_at' | 'updated_at'>, {
     onSuccess: () => {
-        const modal = document.getElementById('add-data-modal') as HTMLDialogElement;
-        modal?.close();
+      const modal = document.getElementById('add-data-modal') as HTMLDialogElement;
+      modal?.close();
+      setSelectedRecord(undefined);
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error('생산일지 추가 실패. 다시 시도해주세요.');
     }
   });
   };
@@ -292,6 +298,7 @@ export const AddDataModal: React.FC = () => {
                               onClick={() => {
                                   const modal = document.getElementById('add-data-modal') as HTMLDialogElement;
                                   modal?.close();
+                                  setSelectedRecord(undefined);
                               }}
                           >
                               취소

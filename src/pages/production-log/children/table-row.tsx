@@ -34,7 +34,8 @@ export const TableRow: React.FC<Props> = ({ record, onImageClick }) => {
     >
       <td className="border border-gray-300">
         <input 
-          type="checkbox" 
+          type="checkbox"   
+          className="checkbox checkbox-sm"
           checked={isSelected}
           onChange={(e) => {
             e.stopPropagation(); 

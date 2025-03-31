@@ -38,7 +38,30 @@ const root = ReactDOM.createRoot(
 root.render(
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Toaster position="top-center" />
+        <Toaster 
+          position="top-center"
+          containerStyle={{
+            zIndex: 9999999, 
+          }}
+          toastOptions={{
+            style: {
+              zIndex: 99999999, 
+            },
+            success: {
+              style: {
+                background: 'green',
+                color: 'white',
+              },
+            },
+            error: {
+              style: {
+                background: 'red',
+                color: 'white',
+              },
+            },
+            
+          }}
+        />
         <Routes>
           <Route path="/sign-in" element={<SignIn/>}/>
           <Route path="/" element={<Navigate to="/sign-in" replace />}/>

@@ -16,7 +16,6 @@ export const useAllProductionRecords = () => {
     queryKey: queryKeys.all,
     queryFn: async () => {
       const response = await api.get<ApiResponse<ProductionRecord[]>>('/production-records')
-      console.log(`response: ${JSON.stringify(response.data)}`);
       return response.data
     },
   })

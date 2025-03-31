@@ -1,8 +1,9 @@
 import { ProductionRecord } from "@/types";
 import { useAllProductionRecords } from "@/hooks/production-records/useProductionRecord";
 import { TableRow } from "./table-row";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImageModal } from "./image-modal";
+import { useProductionRecordStore } from "@/hooks/production-records/useProductionRecordStore";
 
 interface Props {
   setSelectedImage: (imageUrl: string) => void;
@@ -10,8 +11,8 @@ interface Props {
 export const TableBody: React.FC<Props> = ({ 
   setSelectedImage
 }) => {
-  
-  const { data, isLoading, error } = useAllProductionRecords();
+
+  const { filteredRecords } = useProductionRecordStore(); 
   
   const handleImageDoubleClick = (imageUrl: string) => {
       setSelectedImage(imageUrl);
@@ -19,34 +20,12 @@ export const TableBody: React.FC<Props> = ({
       modal?.showModal();      
   };
 
-  if (isLoading) {
-    return (
-      <tbody>
-        <tr>
-          <td colSpan={17} className="text-center py-4">Loading...</td>
-        </tr>
-      </tbody>
-    );
-  }
-
-  if (error) {
-    return (
-      <tbody>
-        <tr>
-          <td colSpan={17} className="text-center py-4 text-red-500">
-            Error: {error.message}
-          </td>
-        </tr>
-      </tbody>
-    );
-  }
-
-  if (!data?.data || data.data.length === 0) {
+  if (filteredRecords.length === 0) {
     return (
       <tbody>
         <tr>
           <td colSpan={17} className="text-center py-4">
-            No records found
+            해당 생산일지가 없습니다.
           </td>
         </tr>
       </tbody>
@@ -56,7 +35,7 @@ export const TableBody: React.FC<Props> = ({
   return (
     <>
       <tbody>
-        {data.data.map((record: ProductionRecord) => (
+        {filteredRecords.map((record: ProductionRecord) => (
           <TableRow 
             key={record.id}
             record={record}
