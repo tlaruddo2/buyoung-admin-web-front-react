@@ -1,4 +1,21 @@
+import { useAllProductionRecords, useProductionRecordStore } from "@/hooks/production-records";
+
 export const TableHead: React.FC = () => {
+  const { selectedIds, clearSelections, toggleSelection } = useProductionRecordStore();
+  const { data: records } = useAllProductionRecords(); //TODO: date 별로분류후 삭제 
+  const isSelected = selectedIds.length > 0;
+
+  const handleCheckboxClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isSelected) {
+      clearSelections();
+    } else {
+      records?.data?.forEach((record) => {
+        toggleSelection(record.id);
+      });
+    }
+  };
+
     const commonClasses = "border border-gray-300 bg-gray-100 text-blue-800 font-bold px-4 py-2 whitespace-pre-line text-center";
 
     return (
@@ -8,7 +25,7 @@ export const TableHead: React.FC = () => {
                     rowSpan={2}
                     className="border border-gray-300 bg-gray-100 text-blue-800 font-bold"
                 >
-                    <input type="checkbox" />
+                    <input type="checkbox" className="checkbox checkbox-sm" onClick={handleCheckboxClick} />
                 </th>
                 <th
                     rowSpan={2}

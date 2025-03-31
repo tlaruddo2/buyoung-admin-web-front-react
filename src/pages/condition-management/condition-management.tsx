@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table } from "../../component/table/table"
 import { CheckListRows } from "../../types/table";
-import { extractExcel, SheetInfo } from "../../helper/extract-excel";
+import { extractExcel, SheetInfo } from "@/utils/extract-excel";
 import axios from "axios";
 import { Header } from "./children/header";
 

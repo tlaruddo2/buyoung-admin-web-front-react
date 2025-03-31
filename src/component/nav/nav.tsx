@@ -1,10 +1,11 @@
 import { useState } from "react"
-
+import { useAuthStore } from "@/hooks/auth/useAuthStore"
 export const Nav: React.FC = () => {
+    const { logout } = useAuthStore();
     const [isOpened, setIsOpened] = useState<boolean>(false)
     
     const handleLogout = () => {
-        localStorage.removeItem('isAuthenticated');
+        logout();
         window.location.href = '/sign-in';
     }
     
